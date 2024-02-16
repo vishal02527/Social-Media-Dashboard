@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Social Media Dashboard - Log In</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        margin: 0;
+        padding: 0;
+        background: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0Hf1xgA19t3CHtqA2sBLZ9cQUmzTjt83LwbaUwfz2Z2gFu-0WwhO6Ls4_b-3gBo-cr50&usqp=CAU");
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+
+      .login-container {
+        max-width: 400px;
+        margin: 120px auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      h1 {
+        color: #3498db;
+      }
+
+      h2 {
+        margin-bottom: 20px;
+        color: #333;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+      }
+
+      label {
+        margin-top: 10px;
+        color: #555;
+      }
+
+      input {
+        width: 95%;
+        padding: 8px;
+        margin-top: 5px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      input:focus {
+        outline: 0;
+        border: 2px solid rgb(250, 147, 21);
+      }
+
+      button {
+        background-color: #009688;
+        color: #fff;
+        padding: 12px 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      button:hover {
+        background-color: #028679;
+      }
+
+      p {
+        margin-top: 15px;
+        color: #777;
+      }
+
+      a {
+        color: #3498db;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      @media only screen and (max-width: 600px) {
+        .login-container {
+          max-width: 260px;
+          margin: 150px auto 170px;
+          padding: 10px 12px;
+        }
+
+        h1 {
+          font-size: 1.3em;
+        }
+
+        h2 {
+          font-size: 1em;
+          margin-bottom: 25px;
+        }
+
+        label {
+          font-size: 14px;
+          margin-top: 5px;
+        }
+
+        input {
+          width: 94%;
+        }
+
+        button {
+          margin-top: 20px;
+        }
+
+        input,
+        button {
+          font-size: 14px;
+        }
+        p {
+          font-size: 14px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-container">
+      <h1>Social Media Dashboard</h1>
+      <h2>Log In</h2>
+
+      <form id="login-form" action="./dashboard.html" method="GET">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required />
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required />
+
+        <button>Log In</button>
+      </form>
+
+      <p>Don't have an account? <a href="signup.html">Sign up here</a></p>
+    </div>
+    <script>
+      document
+        .getElementById("login-form")
+        .addEventListener("submit", function (event) {
+          // Retrieve stored username and password from localStorage
+          const storedUsername = localStorage.getItem("username");
+          const storedPassword = localStorage.getItem("password");
+
+          // Get user input
+          const enteredUsername = document.getElementById("username").value;
+          const enteredPassword = document.getElementById("password").value;
+
+          // Check if the entered username and password match the stored values
+          if (
+            enteredUsername === storedUsername &&
+            enteredPassword === storedPassword
+          ) {
+
+            localStorage.setItem("isLoggedIn", "true");
+            // Redirect to dashboard
+            window.location.href = "./dashboard.html";
+          } else {
+            // Prevent form submission if login fails
+            event.preventDefault();
+            alert("Invalid username or password. Please try again.");
+          }
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Social Media Dashboard - Dashboard</title>
+    <script
+      src="https://kit.fontawesome.com/d74f12bccc.js"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0;
+        overflow-x: hidden;
+      }
+
+      nav {
+        background-color: #fff;
+        height: 70px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .leftTopNav {
+        display: flex;
+        align-items: center;
+      }
+
+      .leftTopNav img {
+        width: 30px;
+        height: 30px;
+      }
+
+      .leftTopNav #brandName {
+        font-size: 1.4em;
+        font-family: "Caveat Brush", cursive;
+        color: rgb(247, 155, 102);
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      .listitems a {
+        color: #fff;
+        padding: 15px;
+        margin: 0 5px;
+        font-weight: bold;
+        transition: color 0.3s ease;
+      }
+
+      .listitems a:hover {
+        color: #ecf0f1;
+      }
+
+      #logout {
+        background-image: linear-gradient(
+          to left bottom,
+          #314755 40%,
+          #26a0da 100%,
+          #314755 100%
+        );
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      #delete-account {
+        background-image: linear-gradient(
+          to right,
+          #f00000 0%,
+          #dc281e 51%,
+          #f00000 100%
+        );
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .heading {
+        color: #191970;
+        text-align: center;
+        margin-top: 50px;
+      }
+
+      section {
+        width: 90%;
+        padding: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0 0 20px 12%;
+      }
+
+      .post {
+        max-width: 300px;
+        background-color: #fff;
+        margin: 20px;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease-in-out;
+        overflow: hidden;
+        cursor: pointer;
+      }
+
+      .post:hover {
+        transform: scale(1.05);
+      }
+
+      .post img {
+        width: 300px;
+        height: 200px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+      }
+
+      .post h3 {
+        font-size: 1.5em;
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      .post p {
+        color: #555;
+        line-height: 1.4;
+      }
+
+      i {
+        margin-right: 5px;
+      }
+
+      footer {
+        background-color: #02294d;
+        color: #fff;
+        text-align: center;
+        padding: 1em;
+      }
+
+      /* dark mode styles */
+      body.dark-mode {
+        background-color: #0c121c;
+        color: #fff;
+      }
+
+      body.dark-mode nav {
+        background-color: #0c121c;
+        position: unset;
+      }
+
+      body.dark-mode #brandName {
+        color: rgb(247, 155, 102);
+      }
+
+      body.dark-mode .heading {
+        color: #fff;
+      }
+
+      body.dark-mode .post {
+        background-color: #1c2638;
+        color: #fff;
+      }
+
+      body.dark-mode .post h3 {
+        color: #fff;
+      }
+
+      body.dark-mode .post p {
+        color: #fff;
+      }
+
+      #dark-mode-toggle {
+        display: inline-block;
+        border: 2px solid #ddd;
+        text-align: right;
+        width: 110px;
+        height: 45px;
+        background-color: #eee8e8;
+        border-radius: 30px;
+        position: relative;
+        top: -60px;
+        left: 85%;
+        cursor: pointer;
+        font-size: 12px;
+        transition: background-color 0.5s;
+      }
+
+      #dark-mode-toggle:before {
+        content: "";
+        position: absolute;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background-color: #fff;
+        top: 7px;
+        left: 6px;
+        transition: transform 0.5s;
+      }
+
+      body.dark-mode #dark-mode-toggle {
+        background-color: #fff;
+        color: #000;
+        text-align: left;
+      }
+
+      body.dark-mode #dark-mode-toggle:before {
+        transform: translateX(67px);
+        background-color: #000;
+      }
+
+      body.dark-mode .modal-content {
+        background-color: #2a2f36;
+        border: 1px solid #1a1d22;
+      }
+
+      body.dark-mode .modal-content input,
+      body.dark-mode .modal-content textarea {
+        background-color: #49515d;
+        color: #fff;
+        border: 1px solid #313840;
+      }
+
+      body.dark-mode .modal-content input:focus,
+      body.dark-mode .modal-content textarea:focus {
+        border: none;
+      }
+
+      body.dark-mode .modal-content .close {
+        color: #fff;
+      }
+
+      #create-btn-div {
+        margin: 0 auto 80px 44%;
+      }
+
+      #create-post-btn {
+        border: none;
+        background-image: linear-gradient(
+          to right,
+          #ff512f 0%,
+          #f09819 51%,
+          #ff512f 100%
+        );
+        color: #fff;
+        padding: 18px 35px;
+        text-align: center;
+        text-transform: uppercase;
+        cursor: pointer;
+        box-shadow: 0px 0px 14px -7px #f09819;
+        border-radius: 5px;
+        font-weight: 700;
+        font-size: 16px;
+        transition: 0.5s;
+        background-size: 200% auto;
+      }
+
+      #create-post-btn:hover {
+        background-position: right center;
+      }
+
+      #create-post-btn:active {
+        transform: scale(0.95);
+      }
+
+      /* Modal styles */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-color: rgba(0, 0, 0, 0.6);
+      }
+
+      .modal-content {
+        background-color: #fefefe;
+        margin: 10% auto;
+        padding: 10px 20px;
+        border: 1px solid #888;
+        width: 47%;
+      }
+
+      #success-modal-content {
+        width: 36% !important;
+        margin: 15% auto !important;
+      }
+
+      .modal-content h2 {
+        color: #2f6afe;
+      }
+
+      .modal-content input {
+        width: 60%;
+        outline: 0;
+        border: 1px solid #aaa;
+        padding: 10px;
+        margin-top: 8px;
+        display: block;
+      }
+
+      .modal-content input:focus,
+      textarea:focus {
+        border: 2px solid #faab8e;
+      }
+
+      textarea {
+        outline: 0;
+        resize: none;
+        border: 1px solid #aaa;
+      }
+
+      .modal-content textarea {
+        display: block;
+        margin-top: 10px;
+        width: 40%;
+        height: 80px;
+      }
+
+      .modal-content button {
+        border: none;
+        position: relative;
+        top: -10px;
+        left: 90%;
+        padding: 10px 15px;
+        text-transform: uppercase;
+        text-align: center;
+        background-image: linear-gradient(
+          to right,
+          #add100 0%,
+          #7b920a 51%,
+          #add100 100%
+        );
+        color: #fff;
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      /* Close button */
+      .close {
+        color: #655e5e;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .close:hover,
+      .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .edit-icon, .delete-icon{
+        color: #969494;
+      }
+
+      .edit-icon:hover, .delete-icon:hover{
+        color: #009688;
+      }
+
+      @media only screen and (max-width: 768px) {
+        nav {
+          flex-direction: column;
+          padding: 20px 10px 30px;
+          position: unset;
+          height: 60px;
+        }
+
+        .leftTopNav img {
+          width: 25px;
+          height: 25px;
+        }
+
+        .leftTopNav span {
+          font-size: 1.2em;
+        }
+
+        .listitems {
+          margin-top: 30px;
+          margin-left: 10px;
+        }
+
+        .listitems a {
+          margin: 0 2px;
+          padding: 10px;
+        }
+
+        #logout,
+        #delete-account {
+          padding: 10px;
+          font-size: 14px;
+        }
+
+        .heading {
+          margin-top: 40px;
+          font-size: 1.4em;
+        }
+
+        section {
+          margin: 60px 10px 20px 0;
+        }
+
+        .post {
+          max-width: 280px;
+          margin: 0 0 15px 0;
+          padding: 10px;
+        }
+
+        .post img {
+          width: 255px;
+          height: 150px;
+          margin-bottom: 5px;
+        }
+
+        .post h3 {
+          font-size: 1.3em;
+        }
+
+        .post p {
+          font-size: 14px;
+        }
+
+        footer {
+          font-size: 14px;
+        }
+
+        #dark-mode-toggle {
+          width: 100px;
+          height: 40px;
+          top: 0px;
+          left: 100px;
+          font-size: 11px;
+        }
+
+        #dark-mode-toggle:before {
+          width: 25px;
+          height: 25px;
+          top: 5px;
+          left: 4px;
+        }
+
+        body.dark-mode #dark-mode-toggle:before {
+          transform: translateX(65px);
+        }
+
+        #create-btn-div {
+          margin: 0 auto 80px 25%;
+        }
+
+        #create-post-btn {
+          padding: 15px 20px;
+          font-size: 14px;
+        }
+
+        .modal-content {
+          margin: 40% auto;
+          padding: 10px 15px;
+          width: 75%;
+        }
+
+        #success-modal-content {
+          width: 70% !important;
+          margin: 70% auto !important;
+        }
+
+        .modal-content input {
+          width: 80%;
+          padding: 8px;
+          margin-top: 8px;
+        }
+
+        .modal-content textarea {
+          width: 60%;
+          height: 70px;
+        }
+
+        .modal-content button {
+          top: -5px;
+          left: 74%;
+          padding: 8px 12px;
+        }
+
+        .close {
+          font-weight: 500;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="./index.html">
+        <div class="leftTopNav">
+          <img src="./images/logo.png" alt="Logo" />
+          <span id="brandName">Vishal's World</span>
+        </div>
+      </a>
+      <div class="listitems">
+        <a id="logout" onclick="logout()">Logout</a>
+        <a id="delete-account" onclick="deleteAccount()">Delete Account</a>
+      </div>
+    </nav>
+    <h1 class="heading">Social Media Dashboard</h1>
+    <button id="dark-mode-toggle" onclick="toggleDarkMode()">Dark Mode</button>
+
+    <section id="content">
+      <!-- Sample posts will be dynamically loaded here using JavaScript -->
+    </section>
+
+    <div id="create-btn-div">
+      <button id="create-post-btn" onclick="openCreatePostDialog()">
+        Create Post
+      </button>
+    </div>
+
+    <footer>
+      <p>&copy; 2024 All rights reserved: Vishal's World</p>
+    </footer>
+
+    <div id="create-post-modal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeCreatePostDialog()">&times;</span>
+        <h2>Create New Post</h2>
+        <label for="post-title">Title:</label>
+        <input type="text" id="post-title" placeholder="Enter title" />
+
+        <br />
+        <label for="post-image-url">Image URL:</label>
+        <input type="text" id="post-image-url" placeholder="Enter image URL" />
+        <br />
+        <label for="post-content">Content:</label>
+        <textarea id="post-content" placeholder="Enter content"></textarea
+        ><br />
+        <button onclick="createPost()">post</button>
+      </div>
+    </div>
+
+    <div id="success-message-modal" class="modal">
+      <div class="modal-content" id="success-modal-content">
+        <span class="close" onclick="closeSuccessMessageDialog()">&times;</span>
+        <h2>Done!</h2>
+        <p>
+          <!--Here message will be created dynamically based on create, edit or delete the post.-->
+        </p>
+      </div>
+    </div>
+
+    <!-- Edit Post Modal -->
+    <div id="edit-post-modal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeEditPostDialog()">&times;</span>
+        <h2>Edit Post</h2>
+        <label for="edit-post-title">Title:</label>
+        <input
+          type="text"
+          id="edit-post-title"
+          placeholder="Enter title"
+          required
+        />
+        <br />
+        <label for="edit-post-image-url">Image URL:</label>
+        <input
+          type="url"
+          id="edit-post-image-url"
+          placeholder="Enter image URL"
+          required
+        />
+        <br />
+        <label for="edit-post-content">Content:</label>
+        <textarea
+          id="edit-post-content"
+          placeholder="Enter content"
+          required
+        ></textarea>
+        <button onclick="editPost()">Edit</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+      // Check for user preference in local storage
+      const isDarkMode = localStorage.getItem("darkMode") === "enabled";
+      // Apply dark mode if enabled
+      if (isDarkMode) {
+        document.body.classList.add("dark-mode");
+      }
+
+      // Function to toggle dark mode
+      function toggleDarkMode() {
+        const body = document.body;
+        body.classList.toggle("dark-mode");
+
+        // Save user preference in local storage
+        const isDarkModeEnabled = body.classList.contains("dark-mode");
+
+        // Toggle button text
+        const button = document.getElementById("dark-mode-toggle");
+        button.textContent = isDarkModeEnabled ? "White mode" : "Dark mode";
+
+        // Set the background color of the footer based on the dark mode state
+        document.querySelector("footer").style.backgroundColor =
+          isDarkModeEnabled ? "#0c121c" : "#02294d";
+
+        localStorage.setItem(
+          "darkMode",
+          isDarkModeEnabled ? "enabled" : "disabled"
+        );
+      }
+
+      // Set initial button text and footer background color based on the current state
+      const button = document.getElementById("dark-mode-toggle");
+      button.textContent = isDarkMode ? "White mode" : "Dark mode";
+      document.querySelector("footer").style.backgroundColor = isDarkMode
+        ? "#0c121c"
+        : "#02294d";
+
+      // Function to logout
+      function logout() {
+        localStorage.setItem("isLoggedIn", "false");
+        // Redirect to the login page
+        window.location.href = "login.html";
+      }
+
+      //function to delete account
+      function deleteAccount() {
+        localStorage.removeItem("username");
+        localStorage.removeItem("password");
+
+        // Redirect to the signup page after deleting the account
+        window.location.href = "./signup.html";
+      }
+    </script>
+  </body>
+</html>
